@@ -84,16 +84,7 @@
 
                                     <div class="row">
 
-                                        <div class="col-md-3 col-6 mb-3">
-
-                                            <div id="imagePreview"
-                                                class="d-flex flex-column min-vh-50 justify-content-center align-items-center p-4">
-                                                <p class="text-muted">COVER</p>
-                                                <i class="ti ti-photo-plus fs-1 mx-auto"></i>
-                                            </div>
-                                            <input id="uploadFile" type="file" name="image_cover" class="img">
-
-                                        </div>
+                                        
 
                                         <div class="col-md-3 col-6 mb-3">
 
@@ -288,17 +279,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Alamat Bisnis/Toko</label>
-                                        <textarea name="address" class="form-control @error('address') is-invalid @enderror">{{ old('address') }}</textarea>
-                                        @error('address')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
+                                
 
                                 <hr>
 

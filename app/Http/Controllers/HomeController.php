@@ -59,7 +59,7 @@ class HomeController extends Controller
         $user = User::where('id', $user_id)->first();
         $user_detail = UserDetail::where('user_id', $user_id);
 
-        $categories = Category::all();
+        $categories = Category::where('premium', 0)->get();
         $provinces = Province::all();
 
         return view('home/create', compact('categories', 'provinces', 'user', 'user_detail'));
@@ -71,7 +71,6 @@ class HomeController extends Controller
 
         $validated = $request->validate([
             'title' => 'required',
-            'image_cover' => 'required',
         ]);
 
         $uuid =  $uuid = Str::uuid()->toString();
@@ -91,30 +90,6 @@ class HomeController extends Controller
             $ad->slug = $slugRequest;
         }
         $ad->description = $request['description'];
-
-        if ($request->hasFile('image_cover')) {
-            $manager = new ImageManager(new Driver());
-            $name_gen = hexdec(uniqid()) . '.' . $request->file('image_cover')->getClientOriginalExtension();
-            $img = $manager->read($request->file('image_cover'));
-            // $img = $img->resize(370, 246);
-            // $img = $img->resize(370);
-
-            // $img = $img->resize(370, 246, function ($constraint) {
-            //     $constraint->aspectRatio();
-            // });
-            $img = $img->cover(200, 200);
-            if ($watermark_logo == null) {
-            } else {
-                $img->place('uploads/logo/' . $watermark_logo, 'center');
-            }
-
-            $img->toJpeg(80)->save(base_path('public/uploads/images/' . $name_gen));
-            $save_url = $name_gen;
-
-            $ad->image_cover = $save_url;
-            $ad->image_url = URL::to('/uploads/images/' . $name_gen);
-        }
-
         $ad->category_id = $request['category_id'];
         $ad->subcategory_id = $request['subcategory_id'];
         $ad->user_id = $user_id;
@@ -200,32 +175,6 @@ class HomeController extends Controller
         }
         $ad->description = $request['description'];
 
-        if ($request->hasFile('image_cover')) {
-            $file = $request->file('image_cover');
-            $manager = new ImageManager(new Driver());
-            $name_gen = hexdec(uniqid()) . '.' . $request->file('image_cover')->getClientOriginalExtension();
-
-            $img = $manager->read($request->file('image_cover'));
-            // $img = $img->resize(370, 246);
-            // $img = $img->resize(370);
-
-            // $img = $img->resize(370, 246, function ($constraint) {
-            //     $constraint->aspectRatio();
-            // });
-            $img = $img->cover(200, 200);
-            if ($watermark_logo == null) {
-            } else {
-                $img->place('uploads/logo/' . $watermark_logo, 'center');
-            }
-
-            $img->toJpeg(80)->save(base_path('public/uploads/images/thumbs' . $name_gen));
-            $save_url = $name_gen;
-
-            $file->move('uploads/images', $name_gen);
-
-            $ad->image_cover = $save_url;
-            $ad->image_url = URL::to('/uploads/images/' . $name_gen);
-        }
 
         $ad->category_id = $request['category_id'];
         $ad->subcategory_id = $request['subcategory_id'];
