@@ -33,7 +33,7 @@
 
 <body class="d-flex flex-column min-vh-100 bg-body-tertiary">
 
-
+    @include('sweetalert::alert')
 
     <div id="app">
         @include('layouts.inc.frontend.navbar')
@@ -46,7 +46,7 @@
 
 </body>
 
-<script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
 <script src="{{ asset('assets/vendor/offcanvas/offcanvas-navbar.js') }}"></script>
 <script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
 <link href="{{ asset('admin/vendor/summernote/summernote-lite.min.css') }}" rel="stylesheet">
@@ -57,7 +57,9 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
 
+<script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.3/dist/index.bundle.min.js"></script>
+
 
 <script type="text/javascript">
     $("img").lazyload({

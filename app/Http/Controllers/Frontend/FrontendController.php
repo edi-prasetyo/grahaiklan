@@ -24,7 +24,7 @@ class FrontendController extends Controller
         $sliders = Slider::where('status', '1')->get();
         $categories = Category::where('status', 1)->with('advertisements')->get();
         $provinces = Province::all();
-        $ads = Advertisement::select('advertisements.id', 'advertisements.image_url', 'advertisements.title', 'advertisements.price', 'advertisements.slug', 'advertisements.name', 'advertisements.address', 'advertisements.views', 'advertisements.phone', 'advertisements.description', 'advertisements.status', 'advertisements.updated_at', 'categories.name as category_name', 'categories.slug as category_slug', 'provinces.name as province_name', 'cities.name as city_name')
+        $ads = Advertisement::select('advertisements.id',  'advertisements.title', 'advertisements.price', 'advertisements.slug', 'advertisements.name', 'advertisements.views', 'advertisements.phone', 'advertisements.description', 'advertisements.status', 'advertisements.updated_at', 'categories.name as category_name', 'categories.slug as category_slug', 'provinces.name as province_name', 'cities.name as city_name')
             ->leftJoin('categories', 'categories.id', '=', 'advertisements.category_id')
             ->leftJoin('provinces', 'provinces.id', '=', 'advertisements.province_id')
             ->leftJoin('cities', 'cities.id', '=', 'advertisements.city_id')

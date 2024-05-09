@@ -96,7 +96,7 @@
                         </div>
 
                         <h4 class="fw-bold my-3">Deskripsi</h4>
-                        <div class="text-muted stretched-link">
+                        <div class="text-muted">
                             {!! $ads->description !!}
                             {{-- {{ $ads->description }} --}}
                         </div>

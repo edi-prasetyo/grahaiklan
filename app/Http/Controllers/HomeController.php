@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
+use RealRashid\SweetAlert\Facades\Alert;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,7 +51,6 @@ class HomeController extends Controller
         $user = User::where('email', auth()->user()->email)->first();
         $ads = Advertisement::where(['user_id' => $user->id, 'status' => 1])->paginate(10);
         $categories = Category::where('premium', 1)->get();
-
         return view('home/home', compact('user', 'provinces', 'ads', 'categories'));
     }
     public function create()
@@ -97,7 +97,6 @@ class HomeController extends Controller
         $ad->email = $request['email'];
         $ad->phone = $request['phone'];
         $ad->phone = $request['phone'];
-        $ad->address = $request['address'];
         $ad->url = $request['url'];
         $ad->province_id = $request['province_id'];
         $ad->city_id = $request['city_id'];
@@ -108,7 +107,8 @@ class HomeController extends Controller
         $ad->meta_keywords = $request['meta_keywords'];
 
         $ad->save();
-        return redirect('home')->with('message', 'Iklan Sudah di tambahkan');
+        Alert::success('Success Title', 'Success Message');
+        return redirect('home');
     }
 
     public function edit_password()
@@ -152,9 +152,7 @@ class HomeController extends Controller
         $option = Option::first();
         $watermark_logo = $option->watermark;
 
-        $validated = $request->validate([
-            'title' => 'required',
-            'image_cover' => 'required',
+        $validated = $request->validate(['title' => 'required',
         ]);
 
         $uuid =  $uuid = Str::uuid()->toString();
@@ -183,8 +181,6 @@ class HomeController extends Controller
         $ad->price = $request['price'];
         $ad->email = $request['email'];
         $ad->phone = $request['phone'];
-        $ad->phone = $request['phone'];
-        $ad->address = $request['address'];
         $ad->url = $request['url'];
         $ad->province_id = $request['province_id'];
         $ad->city_id = $request['city_id'];
@@ -224,7 +220,6 @@ class HomeController extends Controller
                 $imageFile->toJpeg(80)->save(base_path('public/uploads/images/' . $name_gen));
 
                 $adsimages = new Image();
-                $adsimages->content_uuid = $ad->uuid;
                 $adsimages->advertisement_id = $ad->id;
                 $adsimages->name = $ad->title;
                 $adsimages->from = 'ads';

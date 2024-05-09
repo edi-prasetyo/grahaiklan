@@ -19,7 +19,7 @@ class AdvertisementController extends Controller
 {
     public function index()
     {
-        $ads = Advertisement::select('advertisements.id', 'advertisements.image_url', 'advertisements.title', 'advertisements.price', 'advertisements.slug', 'advertisements.name', 'advertisements.address', 'advertisements.views', 'advertisements.phone', 'advertisements.description', 'advertisements.status', 'advertisements.updated_at', 'categories.name as category_name', 'categories.slug as category_slug', 'provinces.name as province_name', 'cities.name as city_name')
+        $ads = Advertisement::select('advertisements.id',  'advertisements.title', 'advertisements.price', 'advertisements.slug', 'advertisements.name',  'advertisements.views', 'advertisements.phone', 'advertisements.description', 'advertisements.status', 'advertisements.updated_at', 'categories.name as category_name', 'categories.slug as category_slug', 'provinces.name as province_name', 'cities.name as city_name')
             ->leftJoin('categories', 'categories.id', '=', 'advertisements.category_id')
             ->leftJoin('provinces', 'provinces.id', '=', 'advertisements.province_id')
             ->leftJoin('cities', 'cities.id', '=', 'advertisements.city_id')
@@ -36,7 +36,7 @@ class AdvertisementController extends Controller
         if (Auth::user()) {
             return redirect('home');
         }
-        $categories = Category::all();
+        $categories = Category::orderBy('id', 'asc')->where('premium', 0);
         $provinces = Province::all();
         return view('frontend.advertisement.create', compact('categories', 'provinces'));
     }
@@ -95,7 +95,7 @@ class AdvertisementController extends Controller
 
     public function show(String $ads_slug)
     {
-        $ads = Advertisement::select('advertisements.id', 'advertisements.user_id', 'advertisements.uuid', 'advertisements.title', 'advertisements.image_url', 'advertisements.name', 'advertisements.price', 'advertisements.address', 'advertisements.views', 'advertisements.phone', 'advertisements.description', 'advertisements.status', 'advertisements.updated_at', 'categories.name as category_name', 'provinces.name as province_name', 'cities.name as city_name', 'users.created_at as userjoin')
+        $ads = Advertisement::select('advertisements.id', 'advertisements.user_id', 'advertisements.uuid', 'advertisements.title', 'advertisements.name', 'advertisements.price', 'advertisements.views', 'advertisements.phone', 'advertisements.description', 'advertisements.status', 'advertisements.updated_at', 'categories.name as category_name', 'provinces.name as province_name', 'cities.name as city_name', 'users.created_at as userjoin')
             ->join('categories', 'categories.id', '=', 'advertisements.category_id')
             ->join('provinces', 'provinces.id', '=', 'advertisements.province_id')
             ->join('cities', 'cities.id', '=', 'advertisements.city_id')

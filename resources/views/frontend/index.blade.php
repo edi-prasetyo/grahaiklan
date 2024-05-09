@@ -101,7 +101,7 @@
 
                                             <div class="card-img-frame">
                                                 <img src="{{ $data->images[0]->image_url }}" class="card-img-top img-fluid"
-                                                    alt="...">
+                                                    alt="{{$data->title}}">
                                                 <div class="tag badge text-bg-success"><i class="ti ti-tag"></i>
                                                     {{ $data->category_name }}</div>
                                             </div>
@@ -113,7 +113,45 @@
                                                     {{ $data->title }} </a></h5>
 
 
-                                            <h4 class="text-success">Rp. {{ number_format($data->price) }}</h4>
+                                            <h4 class="text-success">
+                                                
+                                                
+                                                
+                                                
+                                                @php
+                                                $n = $data->price;
+                                                $presisi=1;
+                                                    if ($n < 900) {
+		$format_angka = number_format($n, $presisi);
+		$simbol = '';
+	} else if ($n < 900000) {
+		$format_angka = number_format($n / 1000, $presisi);
+		$simbol = 'rb';
+	} else if ($n < 900000000) {
+		$format_angka = number_format($n / 1000000, $presisi);
+		$simbol = 'jt';
+	} else if ($n < 900000000000) {
+		$format_angka = number_format($n / 1000000000, $presisi);
+		$simbol = 'M';
+	} else {
+		$format_angka = number_format($n / 1000000000000, $presisi);
+		$simbol = 'T';
+	}
+ 
+	if ( $presisi > 0 ) {
+		$pisah = '.' . str_repeat( '0', $presisi );
+		$format_angka = str_replace( $pisah, '', $format_angka );
+	}
+                                                @endphp
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                Rp. {{ $format_angka .' '. $simbol}}</h4>
                                             <div class="row">
                                                 @foreach (App\Models\AdditionalField::where('advertisement_id', $data->id)->take(2)->get() as $field)
                                                     <div class="col-md-6">
@@ -123,7 +161,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <span class="me-3"><i class="ti ti-map-pin"></i> {{ $data->city_name }} -
+                                            <span class="me-3"><i class="ti ti-map-pin"></i> 
                                                 {{ $data->province_name }}
                                             </span>
                                         </div>

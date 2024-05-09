@@ -13,7 +13,9 @@
                             <div class="card mb-3 shadow-sm">
                                 <div class="card-img-cover">
                                     <div class="card-img-frame">
-                                        <img src="{{ $data->image_url }}" class="card-img-top img-fluid" alt="...">
+                                        <img src="{{ $data->images[0]->image_url }}" class="card-img-top img-fluid" alt="{{$data->title}}">
+                                        <div class="tag badge text-bg-success"><i class="ti ti-tag"></i>
+                                                    {{ $data->category_name }}</div>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -22,8 +24,24 @@
                                             href="{{ url('detail/' . $data->slug) }}">
                                             {{ $data->title }} </a></h5>
 
-                                    <h4 class="text-success">Rp. {{ number_format($data->price) }}</h4>
-                                    <p class="card-text"><i class="ti ti-tag"></i> {{ $data->category_name }}</p>
+                                    <h6 class="text-success">
+                                        @php
+                                            if ($data->price < 1000000) {
+    // Anything less than a million
+    $n_format = number_format($data->price);
+} else if ($data->price < 1000000000) {
+    // Anything less than a billion
+    $n_format = number_format($data->price / 1000000, 1) . ' Juta';
+    
+} else {
+    // At least a billion
+    $n_format = number_format($data->price / 1000000000, 1) . ' Miliar';
+}
+                                        @endphp
+                                        
+                                        
+                                        Rp. {{ $n_format}}</h6>
+                                    
 
                                     <div class="row">
                                         @foreach (App\Models\AdditionalField::where('advertisement_id', $data->id)->take(2)->get() as $field)
