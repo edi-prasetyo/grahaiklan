@@ -155,7 +155,7 @@ class FrontendController extends Controller
     }
     public function fetchSubcategory(Request $request)
     {
-        $data['subcategory'] = Subcategory::where("category_id", $request->category_id)
+        $data['subcategory'] = Subcategory::where(["category_id" => $request->category_id, 'premium' => 0])
             ->get(["name", "id"]);
 
         return response()->json($data);

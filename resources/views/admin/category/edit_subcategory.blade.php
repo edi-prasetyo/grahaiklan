@@ -41,6 +41,13 @@
                                             {{ $subcategory->status == '1' ? 'checked' : '' }}>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-check form-switch">
+                                        <label class="form-check-label">Premium?</label>
+                                        <input class="form-check-input" type="checkbox" name="premium"
+                                            {{ $subcategory->premium == '1' ? 'checked' : '' }}>
+                                    </div>
+                                </div>
                             </div>
 
 

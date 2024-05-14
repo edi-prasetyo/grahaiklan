@@ -36,7 +36,7 @@ class AdvertisementController extends Controller
         if (Auth::user()) {
             return redirect('home');
         }
-        $categories = Category::orderBy('id', 'asc')->where('premium', 0);
+        $categories = Category::all();
         $provinces = Province::all();
         return view('frontend.advertisement.create', compact('categories', 'provinces'));
     }

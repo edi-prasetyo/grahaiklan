@@ -59,12 +59,33 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
+                                <div class="col-md-12 col-6 mb-3">
+                                    <div id="imagePreview2"
+                                        class="d-flex flex-column min-vh-50 justify-content-center align-items-center">
+                                        <p class="text-muted">PHOTO 1</p>
+                                        <i class="ti ti-photo-plus fs-1 mx-auto"></i>
+                                    </div>
+                                    <input id="uploadFile2" type="file" name="image[]" class="img">
+                                </div>
+
+                                <div class="col-md-7">
                                     <div class="form-group mb-3">
                                         <label class="form-label">Judul Iklan</label>
                                         <input type="text" class="form-control @error('title') is-invalid @enderror"
                                             name="title" value="{{ old('title') }}">
                                         @error('title')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Harga</label>
+                                        <input type="text" class="form-control @error('price') is-invalid @enderror"
+                                            name="price" value="{{ old('price') }}">
+                                        @error('price')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -125,38 +146,8 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-
-                                        <label class="form-label">Website Text <span class="text-success"> * Optional
-                                            </span></label>
 
 
-                                        <input type="text" class="form-control @error('website') is-invalid @enderror"
-                                            name="website" value="{{ old('website') }}">
-                                        @error('website')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">url</label>
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text" id="basic-addon1">https://</span>
-                                        <input type="text" name="url"
-                                            class="form-control @error('url') is-invalid @enderror"
-                                            placeholder="www.websiteanda.com" aria-label="Username"
-                                            aria-describedby="basic-addon1">
-                                        @error('url')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                </div>
 
                                 <div class="col-md-6 ">
                                     <div class="form-group mb-3">
@@ -193,17 +184,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Alamat Bisnis/Toko</label>
-                                        <textarea name="address" class="form-control @error('address') is-invalid @enderror">{{ old('address') }}</textarea>
-                                        @error('address')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
+
 
                                 <hr>
                                 <div class="col-md-6">

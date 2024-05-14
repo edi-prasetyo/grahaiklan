@@ -9,12 +9,12 @@
                 <div class="col-md-8 mx-auto">
 
                     @if ($errors->any())
-                    <div class="alert alert-warning">
-                        @foreach ($errors->all() as $error)
-                            <div>{{ $error }}</div>
-                        @endforeach
-                    </div>
-                @endif
+                        <div class="alert alert-warning">
+                            @foreach ($errors->all() as $error)
+                                <div>{{ $error }}</div>
+                            @endforeach
+                        </div>
+                    @endif
 
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -42,7 +42,26 @@
 
                                     <input type="hidden" name="category_id" value="{{ $category->id }}">
                                     <input type="hidden" name="subcategory_id" value="{{ $subcategory->id }}">
+
                                     <div class="row">
+                                        @foreach ($fields as $field)
+                                            <div class="col-md-4">
+                                                <div class="form-group mb-3">
+                                                    <label class="form-label">{{ $field->field_name }}</label>
+                                                    <input type="hidden" class="form-control" name="field_name[]"
+                                                        value="{{ $field->field_name }}" required>
+                                                    <input type="hidden" class="form-control" name="field_icon[]"
+                                                        value="{{ $field->field_icon }}" required>
+                                                    <input type="text" class="form-control" name="field_value[]"
+                                                        required>
+
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+
 
                                         <div class="col-md-8">
                                             <div class="form-group mb-3">
@@ -72,25 +91,46 @@
                                         </div>
 
 
-
-                                        @foreach ($fields as $field)
-                                            <div class="col-md-4">
-                                                <div class="form-group mb-3">
-                                                    <label class="form-label">{{ $field->field_name }}</label>
-                                                    <input type="hidden" class="form-control" name="field_name[]"
-                                                        value="{{ $field->field_name }}" required>
-                                                    <input type="hidden" class="form-control" name="field_icon[]"
-                                                        value="{{ $field->field_icon }}" required>
-                                                    <input type="text" class="form-control" name="field_value[]"
-                                                        required>
-
-                                                </div>
+                                        <div class="col-md-6 ">
+                                            <div class="form-group mb-3">
+                                                <label class="form-label">Pilih Provinsi</label>
+                                                <select
+                                                    class="form-select single-select-field @error('province_id') is-invalid @enderror"
+                                                    id="country-dropdown" data-placeholder="Pilih Provinsi"
+                                                    name="province_id">
+                                                    <option value=""></option>
+                                                    @foreach ($provinces as $key => $province)
+                                                        <option value="{{ $province->id }}"
+                                                            {{ old('province_id') == $province->id ? 'selected' : '' }}>
+                                                            {{ $province->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('province_id')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
-                                        @endforeach
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label class="form-label">Kota</label>
+                                                <select id="state-dropdown"
+                                                    class="form-select single-select-field @error('city_id') is-invalid @enderror"
+                                                    name="city_id">
+                                                </select>
+                                                @error('city_id')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
 
                                         <div class="col-md-12 my-5">
                                             <div class="row">
-                                                
+
                                                 <div class="col-md-3 col-6 mb-3">
                                                     <div id="imagePreview2"
                                                         class="d-flex flex-column min-vh-50 justify-content-center align-items-center">
@@ -115,7 +155,8 @@
                                                         <p class="text-muted">PHOTO 3</p>
                                                         <i class="ti ti-photo-plus fs-1 mx-auto"></i>
                                                     </div>
-                                                    <input id="uploadFile4" type="file" name="image[]" class="img">
+                                                    <input id="uploadFile4" type="file" name="image[]"
+                                                        class="img">
 
                                                 </div>
 
@@ -166,7 +207,7 @@
                                         </div>
 
 
-                                        <hr>
+
 
                                         <div class="col-md-6">
 
@@ -203,81 +244,13 @@
                                             @enderror
 
                                         </div>
-                                        {{-- <div class="col-md-6">
-                                            <div class="form-group mb-3">
 
-                                                <label class="form-label">Website Text <span class="text-success"> *
-                                                        Optional
-                                                    </span></label>
 
-                                                <input type="text"
-                                                    class="form-control @error('website') is-invalid @enderror"
-                                                    name="website" value="{{ old('website') }}">
-                                                @error('website')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Target url <span class="text-success"> * Optional
-                                                </span></label>
-                                            <div class="input-group mb-3">
-                                                <span class="input-group-text" id="basic-addon1"><i
-                                                        class="ti ti-link"></i></span>
-                                                <input type="text" name="url"
-                                                    class="form-control @error('url') is-invalid @enderror"
-                                                    placeholder="https://.." aria-label="Username"
-                                                    aria-describedby="basic-addon1">
-                                                @error('url')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
 
-                                        </div> --}}
 
-                                        <div class="col-md-6 ">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label">Pilih Provinsi</label>
-                                                <select
-                                                    class="form-select single-select-field @error('province_id') is-invalid @enderror"
-                                                    id="country-dropdown" data-placeholder="Pilih Provinsi"
-                                                    name="province_id">
-                                                    <option value=""></option>
-                                                    @foreach ($provinces as $key => $province)
-                                                        <option value="{{ $province->id }}"
-                                                            {{ old('province_id') == $province->id ? 'selected' : '' }}>
-                                                            {{ $province->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('province_id')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label">Kota</label>
-                                                <select id="state-dropdown"
-                                                    class="form-select single-select-field @error('city_id') is-invalid @enderror"
-                                                    name="city_id">
-                                                </select>
-                                                @error('city_id')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
 
-                                        
 
-                                        <hr>
+
 
                                         <div class="col-md-12">
                                             <div class="form-group mb-3">

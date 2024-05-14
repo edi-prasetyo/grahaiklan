@@ -160,6 +160,7 @@ class CategoryController extends Controller
         $category->meta_description = $validatedData['meta_description'];
         $category->meta_keyword = $validatedData['meta_keyword'];
         $category->status = $request->status == true ? '1' : '0';
+        $category->premium = $request->premium == true ? '1' : '0';
 
         $category->update();
         return redirect('admin/category')->with('message', 'Category update Succesfully');
@@ -203,6 +204,7 @@ class CategoryController extends Controller
             $subctegory->slug = $slugRequest;
         }
         $subctegory->status = $request->status == true ? '1' : '0';
+        $subctegory->premium = $request->premium == true ? '1' : '0';
         $subctegory->save();
 
         return redirect()->back()->with('message', 'Subcategory has ben Added');
@@ -218,6 +220,7 @@ class CategoryController extends Controller
 
         $subcategory->name = $request['name'];
         $subcategory->status = $request->status == true ? '1' : '0';
+        $subcategory->premium = $request->premium == true ? '1' : '0';
         $subcategory->update();
 
         return redirect('admin/category/subcategory/' . $category->id)->with('message', 'Brand update Succesfully');

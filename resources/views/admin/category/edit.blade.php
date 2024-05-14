@@ -6,6 +6,13 @@
             {{ session('message') }}
         </div>
     @endif
+    @if ($errors->any())
+        <div class="alert alert-warning">
+            @foreach ($errors->all() as $error)
+                <div>{{ $error }}</div>
+            @endforeach
+        </div>
+    @endif
     <div class="col-md-12">
         <div class="card">
             <div class="card-header bg-white">
@@ -68,6 +75,13 @@
                                     <label class="form-check-label">Status</label>
                                     <input class="form-check-input" type="checkbox" name="status"
                                         {{ $category->status == '1' ? 'checked' : '' }}>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check form-switch">
+                                    <label class="form-check-label">Premium</label>
+                                    <input class="form-check-input" type="checkbox" name="premium"
+                                        {{ $category->premium == '1' ? 'checked' : '' }}>
                                 </div>
                             </div>
                         </div>

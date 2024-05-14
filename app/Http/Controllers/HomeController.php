@@ -59,7 +59,7 @@ class HomeController extends Controller
         $user = User::where('id', $user_id)->first();
         $user_detail = UserDetail::where('user_id', $user_id);
 
-        $categories = Category::where('premium', 0)->get();
+        $categories = Category::all();
         $provinces = Province::all();
 
         return view('home/create', compact('categories', 'provinces', 'user', 'user_detail'));
@@ -90,14 +90,14 @@ class HomeController extends Controller
             $ad->slug = $slugRequest;
         }
         $ad->description = $request['description'];
+        $ad->price = $request['price'];
         $ad->category_id = $request['category_id'];
         $ad->subcategory_id = $request['subcategory_id'];
         $ad->user_id = $user_id;
         $ad->name = $request['name'];
         $ad->email = $request['email'];
         $ad->phone = $request['phone'];
-        $ad->phone = $request['phone'];
-        $ad->url = $request['url'];
+
         $ad->province_id = $request['province_id'];
         $ad->city_id = $request['city_id'];
         $ad->status = 1;
@@ -107,6 +107,36 @@ class HomeController extends Controller
         $ad->meta_keywords = $request['meta_keywords'];
 
         $ad->save();
+
+
+        if ($request->hasFile('image')) {
+            $i = 1;
+            foreach ($request->file('image') as $imageFile) {
+                $manager = new ImageManager(new Driver());
+                $name_gen = hexdec(uniqid()) . $i++ . '.' . $imageFile->getClientOriginalExtension();
+
+                $imageFile = $manager->read($imageFile);
+                $imageFile = $imageFile->scale(height: 500);
+
+                if ($watermark_logo == null) {
+                } else {
+                    $imageFile->place('uploads/logo/' . $watermark_logo, 'center');
+                }
+
+                $imageFile->toJpeg(80)->save(base_path('public/uploads/images/' . $name_gen));
+
+                $adsimages = new Image();
+                $adsimages->advertisement_id = $ad->id;
+                $adsimages->name = $ad->title;
+                $adsimages->from = 'ads';
+                $adsimages->image = $name_gen;
+                $adsimages->image_url = URL::to('/uploads/images/' . $name_gen);
+
+                $adsimages->save();
+            }
+        }
+
+
         Alert::success('Success Title', 'Success Message');
         return redirect('home');
     }
@@ -129,7 +159,7 @@ class HomeController extends Controller
     // ADS FUNCTION
     public function add_iklan($category_slug)
     {
-        $category = Category::where('slug', $category_slug)->first();
+        $category = Category::where(['slug' => $category_slug, 'premium' => 1])->first();
         $subcategories = Subcategory::where('category_id', $category->id)->get();
         return view('home.add_iklan', compact('category', 'subcategories'));
     }
@@ -152,7 +182,8 @@ class HomeController extends Controller
         $option = Option::first();
         $watermark_logo = $option->watermark;
 
-        $validated = $request->validate(['title' => 'required',
+        $validated = $request->validate([
+            'title' => 'required',
         ]);
 
         $uuid =  $uuid = Str::uuid()->toString();

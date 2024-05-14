@@ -42,6 +42,14 @@
                                 </div>
                             </div>
 
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <label class="form-check-label">Premium?</label>
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                        id="flexSwitchCheckDefault" name="premium">
+                                </div>
+                            </div>
+
 
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Save</button>
@@ -62,7 +70,7 @@
                         <tr>
 
                             <th scope="col">name</th>
-                            <th scope="col">slug</th>
+                            <th scope="col">Premium</th>
                             <th scope="col">action</th>
                         </tr>
                     </thead>
@@ -70,7 +78,14 @@
                         @foreach ($subcategory as $data)
                             <tr>
                                 <td>{{ $data->name }}</td>
-                                <td>{{ $data->slug }}</td>
+                                <td>
+                                    @if ($data->premium == 0)
+                                        <div class="badge bg-light-danger text-danger">
+                                            No</div>
+                                    @else
+                                        <div class="badge bg-light-success text-success">Yes</div>
+                                    @endif
+                                </td>
 
 
                                 <td>

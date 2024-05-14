@@ -66,12 +66,59 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
+                                <div class="col-md-6 ">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Pilih Provinsi</label>
+                                        <select
+                                            class="form-select single-select-field @error('province_id') is-invalid @enderror"
+                                            id="country-dropdown" data-placeholder="Pilih Provinsi" name="province_id">
+                                            <option value=""></option>
+                                            @foreach ($provinces as $key => $province)
+                                                <option value="{{ $province->id }}"
+                                                    {{ old('province_id') == $province->id ? 'selected' : '' }}>
+                                                    {{ $province->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('province_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Kota</label>
+                                        <select id="state-dropdown"
+                                            class="form-select single-select-field @error('city_id') is-invalid @enderror"
+                                            name="city_id">
+                                        </select>
+                                        @error('city_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-7">
                                     <div class="form-group mb-3">
                                         <label class="form-label">Judul Iklan</label>
                                         <input type="text" class="form-control @error('title') is-invalid @enderror"
                                             name="title" value="{{ old('title') }}">
                                         @error('title')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Judul Iklan</label>
+                                        <input type="text" class="form-control @error('price') is-invalid @enderror"
+                                            name="price" value="{{ old('title') }}">
+                                        @error('price')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -84,7 +131,7 @@
 
                                     <div class="row">
 
-                                        
+
 
                                         <div class="col-md-3 col-6 mb-3">
 
@@ -121,18 +168,6 @@
 
                                     </div>
 
-
-                                    {{-- <div class="post-image post-image-placeholder mrm mts empty">
-                                        <div class="upload-section">
-                                            <input type="file" id="Photofile1" class="upload-img" name="image_cover"
-                                                required>
-                                            <label class="icon-camera" for="Photofile1">
-                                                <i class="ti ti-camera"></i>
-                                            </label>
-                                            <p class="uppercase">Thumbnail</p>
-                                        </div>
-                                        <div class="preview-section"></div>
-                                    </div> --}}
                                 </div>
 
                                 <div class="col-md-12">
@@ -151,7 +186,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label class="form-label">Sub Judul</label>
-                                        <input type="text" class="form-control @error('meta_title') is-invalid @enderror"
+                                        <input type="text"
+                                            class="form-control @error('meta_title') is-invalid @enderror"
                                             name="meta_title" value="{{ old('meta_title') }}">
                                         @error('meta_title')
                                             <span class="invalid-feedback" role="alert">
@@ -174,8 +210,6 @@
                                     </div>
                                 </div>
 
-
-                                <hr>
 
                                 <div class="col-md-6">
 
@@ -210,78 +244,7 @@
                                     @enderror
 
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
 
-                                        <label class="form-label">Website Text <span class="text-success"> * Optional
-                                            </span></label>
-
-                                        <input type="text" class="form-control @error('website') is-invalid @enderror"
-                                            name="website" value="{{ old('website') }}">
-                                        @error('website')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Target url <span class="text-success"> * Optional
-                                        </span></label>
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text" id="basic-addon1"><i
-                                                class="ti ti-link"></i></span>
-                                        <input type="text" name="url"
-                                            class="form-control @error('url') is-invalid @enderror"
-                                            placeholder="https://.." aria-label="Username"
-                                            aria-describedby="basic-addon1">
-                                        @error('url')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                </div>
-
-                                <div class="col-md-6 ">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Pilih Provinsi</label>
-                                        <select
-                                            class="form-select single-select-field @error('province_id') is-invalid @enderror"
-                                            id="country-dropdown" data-placeholder="Pilih Provinsi" name="province_id">
-                                            <option value=""></option>
-                                            @foreach ($provinces as $key => $province)
-                                                <option value="{{ $province->id }}"
-                                                    {{ old('province_id') == $province->id ? 'selected' : '' }}>
-                                                    {{ $province->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('province_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Kota</label>
-                                        <select id="state-dropdown"
-                                            class="form-select single-select-field @error('city_id') is-invalid @enderror"
-                                            name="city_id">
-                                        </select>
-                                        @error('city_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                
-
-                                <hr>
 
                                 <div class="col-md-12">
                                     <div class="form-group mb-3">
