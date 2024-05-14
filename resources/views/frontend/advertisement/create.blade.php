@@ -8,11 +8,14 @@
                     {{ session('status') }}
                 </div>
             @endif
-            @if (session('activated'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('activated') }}
+            @if ($errors->any())
+                <div class="alert alert-warning">
+                    @foreach ($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
                 </div>
             @endif
+
             <!-- /User Card -->
             <div class="col-md-8 mx-auto">
                 <div class="card shadow-sm">
@@ -59,13 +62,13 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 col-6 mb-3">
-                                    <div id="imagePreview2"
-                                        class="d-flex flex-column min-vh-50 justify-content-center align-items-center">
-                                        <p class="text-muted">PHOTO 1</p>
+                                <div class="col-md-6 col-12 mb-3 mx-auto">
+                                    <div id="imagePreview"
+                                        class="d-flex flex-column min-vh-70 justify-content-center align-items-center py-5">
+                                        <p class="text-muted">PHOTO</p>
                                         <i class="ti ti-photo-plus fs-1 mx-auto"></i>
                                     </div>
-                                    <input id="uploadFile2" type="file" name="image[]" class="img">
+                                    <input id="uploadFile" type="file" name="image[]" class="img">
                                 </div>
 
                                 <div class="col-md-7">
@@ -96,7 +99,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group mb-3">
                                         <label class="form-label">Deskripsi Iklan</label>
-                                        <textarea type="text" class="form-control @error('description') is-invalid @enderror" name="description"
+                                        <textarea id="summernote" class="form-control @error('description') is-invalid @enderror" name="description"
                                             value="{{ old('description') }}" style="white-space: pre-wrap">{{ old('description') }}</textarea>
                                         @error('description')
                                             <span class="invalid-feedback" role="alert">
@@ -319,6 +322,43 @@
             $('#datepicker').datepicker({
                 format: 'yyyy-dd-mm',
             });
+        });
+
+        // Image Preview
+
+        $(function() {
+            $("#uploadFile").on("change", function() {
+                var files = !!this.files ? this.files : [];
+                if (!files.length || !window.FileReader)
+                    return; // no file selected, or no FileReader support
+
+                if (/^image/.test(files[0].type)) { // only image file
+                    var reader = new FileReader(); // instance of the FileReader
+                    reader.readAsDataURL(files[0]); // read the local file
+
+                    reader.onloadend = function() { // set image data as background of div
+                        $("#imagePreview").css("background-image", "url(" + this.result + ")");
+                    }
+                }
+            });
+        });
+
+        $('#imagePreview').click(function() {
+            $('#uploadFile').click();
+        });
+
+        $("#summernote").summernote({
+            height: 300,
+            tooltip: false,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['para', ['ol', 'ul', 'paragraph']],
+
+
+
+            ]
         });
     </script>
 @endsection

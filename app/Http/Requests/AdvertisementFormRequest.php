@@ -44,19 +44,11 @@ class AdvertisementFormRequest extends FormRequest
                 'required',
                 'unique:advertisements'
             ],
-            'website' => [
-                'nullable',
-            ],
-            'url' => [
-                'nullable',
-            ],
+
             'province_id' => [
                 'required',
             ],
             'city_id' => [
-                'required',
-            ],
-            'address' => [
                 'required',
             ],
             'meta_title' => [

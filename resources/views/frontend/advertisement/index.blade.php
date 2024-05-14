@@ -13,9 +13,10 @@
                             <div class="card mb-3 shadow-sm">
                                 <div class="card-img-cover">
                                     <div class="card-img-frame">
-                                        <img src="{{ $data->images[0]->image_url }}" class="card-img-top img-fluid" alt="{{$data->title}}">
+                                        <img src="{{ $data->images[0]->image_url }}" class="card-img-top img-fluid"
+                                            alt="{{ $data->title }}">
                                         <div class="tag badge text-bg-success"><i class="ti ti-tag"></i>
-                                                    {{ $data->category_name }}</div>
+                                            {{ $data->category_name }}</div>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -24,24 +25,46 @@
                                             href="{{ url('detail/' . $data->slug) }}">
                                             {{ $data->title }} </a></h5>
 
-                                    <h6 class="text-success">
+                                    <h4 class="text-success">
+
+
+
+
                                         @php
-                                            if ($data->price < 1000000) {
-    // Anything less than a million
-    $n_format = number_format($data->price);
-} else if ($data->price < 1000000000) {
-    // Anything less than a billion
-    $n_format = number_format($data->price / 1000000, 1) . ' Juta';
-    
-} else {
-    // At least a billion
-    $n_format = number_format($data->price / 1000000000, 1) . ' Miliar';
-}
+                                            $n = $data->price;
+                                            $presisi = 1;
+                                            if ($n < 900) {
+                                                $format_angka = number_format($n, $presisi);
+                                                $simbol = '';
+                                            } elseif ($n < 900000) {
+                                                $format_angka = number_format($n / 1000, $presisi);
+                                                $simbol = 'rb';
+                                            } elseif ($n < 900000000) {
+                                                $format_angka = number_format($n / 1000000, $presisi);
+                                                $simbol = 'jt';
+                                            } elseif ($n < 900000000000) {
+                                                $format_angka = number_format($n / 1000000000, $presisi);
+                                                $simbol = 'M';
+                                            } else {
+                                                $format_angka = number_format($n / 1000000000000, $presisi);
+                                                $simbol = 'T';
+                                            }
+
+                                            if ($presisi > 0) {
+                                                $pisah = '.' . str_repeat('0', $presisi);
+                                                $format_angka = str_replace($pisah, '', $format_angka);
+                                            }
                                         @endphp
-                                        
-                                        
-                                        Rp. {{ $n_format}}</h6>
-                                    
+
+
+
+
+
+
+
+
+                                        Rp. {{ $format_angka . ' ' . $simbol }}</h4>
+
 
                                     <div class="row">
                                         @foreach (App\Models\AdditionalField::where('advertisement_id', $data->id)->take(2)->get() as $field)

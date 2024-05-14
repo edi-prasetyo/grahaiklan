@@ -66,12 +66,10 @@ class AdvertisementController extends Controller
         $advertisement->name = $validatedData['name'];
         $advertisement->email = $validatedData['email'];
         $advertisement->phone = $validatedData['phone'];
-        $advertisement->website = $validatedData['website'];
-        $advertisement->url = $validatedData['url'];
 
         $advertisement->province_id = $validatedData['province_id'];
         $advertisement->city_id = $validatedData['city_id'];
-        $advertisement->address = $validatedData['address'];
+
 
         $advertisement->meta_title = $validatedData['meta_title'];
         $advertisement->meta_description = $validatedData['meta_description'];
@@ -105,7 +103,7 @@ class AdvertisementController extends Controller
 
         $user_detail = UserDetail::where('user_id', $ads->user_id)->first();
         $additional_field = AdditionalField::where('advertisement_id', $ads->id)->get();
-        $images = Image::where('content_uuid', $ads->uuid)->get();
+        $images = Image::where('advertisement_id', $ads->id)->get();
         // return $user_detail;
 
 
