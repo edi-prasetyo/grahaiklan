@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
 use App\Models\Option;
+use App\Models\Page;
 use App\Models\Slider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
@@ -26,7 +28,9 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('*', function ($view) {
             $view
                 ->with('headers', Slider::where('type', 1)->get())
-                ->with('option_nav', Option::first());
+                ->with('global_categories', Category::all())
+                ->with('global_option', Option::first())
+                ->with('global_pages', Page::all());
         });
         Paginator::useBootstrapFive();
     }

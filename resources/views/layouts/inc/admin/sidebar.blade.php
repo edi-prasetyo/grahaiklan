@@ -19,22 +19,29 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ url('admin/advertisements') }}" class="nav-link">
+                <i class="feather-briefcase mr-3  fa-fw"></i>
+                Advertisements
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ url('admin/category') }}" class="nav-link">
                 <i class="feather-tag mr-3  fa-fw"></i>
                 Category
             </a>
         </li>
-        <li class="nav-item">
-            <a href="{{ url('admin/variants') }}" class="nav-link">
-                <i class="feather-grid mr-3  fa-fw"></i>
-                Variant
-            </a>
-        </li>
+
 
         <li class="nav-item">
             <a href="{{ url('admin/provinces') }}" class="nav-link">
                 <i class="feather-map-pin mr-3  fa-fw"></i>
                 Area
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url('admin/icons') }}" class="nav-link">
+                <i class="feather-zap mr-3  fa-fw"></i>
+                Icons
             </a>
         </li>
         <li class="nav-item">
@@ -44,11 +51,27 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ url('admin/brands') }}" class="nav-link">
+            <a href="{{ url('admin/packages') }}" class="nav-link">
                 <i class="feather-archive mr-3  fa-fw"></i>
-                Brand
+                Paket
             </a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link d-flex justify-content-between" data-bs-toggle="collapse" href="#collapseExample"
+                role="button" aria-expanded="false" aria-controls="collapseExample">
+                <span><i class="feather-users mr-3  fa-fw"></i> Users </span> <i
+                    class="feather-chevron-down me-3  fa-fw my-auto"></i>
+            </a>
+        </li>
+        <ul class="collapse " id="collapseExample" class="alert alert-primary">
+            <li class="nav-child">
+                <a href="{{ url('admin/users') }}" class=" nav-link">
+                    <i class="fa-solid fa-caret-right mr-3  fa-fw"></i>
+                    All users
+                </a>
+            </li>
+        </ul>
         <p class="text-muted font-weight-bold text-uppercase px-3 small py-2 mb-0"><b>Web Front</b></p>
 
         <li class="nav-item">

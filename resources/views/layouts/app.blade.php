@@ -27,8 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
-
-
+    {!! htmlScriptTagJsApi() !!}
 </head>
 
 <body class="d-flex flex-column min-vh-100 bg-body-tertiary">
@@ -60,10 +59,21 @@
 <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.3/dist/index.bundle.min.js"></script>
 
+<script src="https://getbootstrap.com/docs/5.3/examples/sidebars/sidebars.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+
 
 <script type="text/javascript">
     $("img").lazyload({
         effect: "fadeIn"
+    });
+    jQuery(document).ready(function($) {
+        $('#search-dropdown a').click(function() {
+            $('#search-btn').html($(this).text()).val($(this).text());
+            return false;
+        });
     });
 </script>
 

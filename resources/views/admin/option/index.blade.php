@@ -199,6 +199,33 @@
                                 </div>
 
 
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <hr>
+                    <strong class="mb-0">Ads Status</strong>
+                    <p>You Can set ads to auto publish or draft</p>
+                </div>
+                <div class="col-md-9">
+                    <div class="card mb-5">
+                        <div class="card-body">
+                            <div class="row">
+
+
+
+                                <div class="col-md-6">
+                                    <div class="form-check form-switch">
+                                        <label class="form-check-label">Ads Status</label>
+                                        <input class="form-check-input" type="checkbox" name="ads_status"
+                                            {{ $option->ads_status == '1' ? 'checked' : '' }}>
+                                    </div>
+                                </div>
+
+
                             </div>
                         </div>
                     </div>

@@ -32,4 +32,14 @@ class Category extends Model
     {
         return $this->hasMany(Advertisement::class, 'category_id');
     }
+
+    public function pop_ads()
+    {
+        return $this->hasMany(Advertisement::class, 'category_id');
+    }
+
+    public function subcategory()
+    {
+        return $this->hasMany(Subcategory::class, 'category_id', 'id');
+    }
 }

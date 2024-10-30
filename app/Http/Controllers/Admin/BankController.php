@@ -7,6 +7,7 @@ use App\Http\Requests\BankFormRequest;
 use App\Models\Bank;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\URL;
 
 class BankController extends Controller
 {
@@ -34,6 +35,7 @@ class BankController extends Controller
             $filename = time() . '.' . $ext;
             $file->move('uploads/logo/', $filename);
             $bank->bank_logo = $filename;
+            $bank->bank_logo_url = URL::to('/uploads/logo/' . $filename);
         }
         $bank->status = $request->status == true ? '1' : '0';
 
@@ -66,6 +68,7 @@ class BankController extends Controller
             $filename = time() . '.' . $ext;
             $file->move('uploads/brand/', $filename);
             $bank->image = $filename;
+            $bank->bank_logo_url = URL::to('/uploads/logo/' . $filename);
         }
         $bank->status = $request->status == true ? '1' : '0';
 

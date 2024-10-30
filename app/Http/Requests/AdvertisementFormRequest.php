@@ -28,6 +28,9 @@ class AdvertisementFormRequest extends FormRequest
             'title' => [
                 'required',
             ],
+            'price' => [
+                'required',
+            ],
             'subcategory_id' => [
                 'required',
             ],
@@ -44,7 +47,12 @@ class AdvertisementFormRequest extends FormRequest
                 'required',
                 'unique:advertisements'
             ],
-
+            'website' => [
+                'nullable',
+            ],
+            'url' => [
+                'nullable',
+            ],
             'province_id' => [
                 'required',
             ],

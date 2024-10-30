@@ -1,12 +1,11 @@
 @extends('layouts.app')
 @section('content')
-    @include('layouts.inc.frontend.header')
     <div class="container my-3 mb-5">
         <div class="row">
             <div class="col-md-12">
 
                 <!-- /User Card -->
-                <div class="col-md-8 mx-auto">
+                <div class="col-md-10 mx-auto">
 
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -19,26 +18,113 @@
                         </div>
                     @endif
 
-                    <div class="alert alert-success my-3">
+                    <div class="card my-3">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-9 d-flex align-items-start">
+                                    <div class="text-center me-3">
+                                        @if ($user_detail->photo_url == null)
+                                            <img src="{{ asset('uploads/logo/avatar.jpg') }}"
+                                                class="img-fluid avatar-xl rounded-circle" alt="">
+                                        @else
+                                            <img src="{{ $user_detail->photo_url }}"
+                                                class="img-fluid avatar-xl rounded-circle" alt="">
+                                        @endif
+                                    </div>
+                                    <div>
+
+                                        <h4 class="text-muted font-size-20 mt-3 mb-2">{{ $user_detail->fullname }}</h4>
+
+                                        <p class="text-muted mb-2 fw-medium"><i class="ti ti-mail"></i>
+                                            {{ $user->email }}
+                                        </p>
+                                    </div>
+
+
+
+                                </div><!-- end col -->
+
+                                <div class="col-md-3">
+                                    <div class="text-center text-sm-right">
+                                        <img style="width:60%" src="{{ $user_detail->logo_url }}" class=""
+                                            alt="">
+                                        <div class="text-muted"><small>Joined
+                                                {{ date('d M Y', strtotime($user->created_at)) }}</small>
+                                        </div>
+                                        <a class="btn btn-primary" href="{{ url('profile') }}">
+                                            <i class="ti ti-edit"></i>
+                                            <span>Edit Profile</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div><!-- end row -->
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+
+
+                    {{-- <div class="alert alert-success my-3">
                         <h3> Selamat Datang <b>{{ Auth::user()->name }}</b></h3>
                         <p>ini Adalah halaman akun anda, anda dapat mengatur profile serta foto anda di sini</p>
+                    </div> --}}
+
+                    <div class="row mb-3">
+
+                        <div class="col-sm-6 col-lg-4">
+                            <a class="text-decoration-none" href="{{ url('my-ads') }}">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span
+                                                    class="bg-primary text-white avatar rounded p-3"><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
+                                                    <i class="ti ti-bolt fs-3"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium">
+                                                    {{ count($ads) }} Iklan
+                                                </div>
+                                                <div class="text-secondary">
+                                                    <small> Pasang Iklan</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-sm-6 col-lg-4">
+                            <a class="text-decoration-none" href="{{ url('packages') }}">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span
+                                                    class="bg-success text-white avatar rounded p-3"><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
+                                                    <i class="ti ti-crown fs-3"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium">
+                                                    {{ $premium_ads }} Paket Iklan
+                                                </div>
+                                                <div class="text-secondary">
+                                                    <small> Paket Iklan Premium</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
                     </div>
 
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            Iklan Premium
-                        </div>
-                        <div class="card-body">
-                            @foreach ($categories as $category)
-                                <a href="{{ url('add-iklan/' . $category->slug) }}" class="btn btn-outline-secondary mb-2">
-                                    {{ $category->name }}</a>
-                            @endforeach
-                        </div>
-                    </div>
 
-                    <a href="{{ url('create') }}" class="btn btn-lg btn-success my-3">Pasang Iklan Gratis</a>
 
-                    <div class="card">
+
+
+                    {{-- <div class="card">
                         <div class="card-header">
                             Iklan Saya
                         </div>
@@ -70,7 +156,7 @@
                             </tbody>
                         </table>
 
-                    </div>
+                    </div> --}}
 
 
 

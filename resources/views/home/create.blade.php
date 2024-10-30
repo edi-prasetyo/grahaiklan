@@ -1,50 +1,160 @@
 @extends('layouts.app')
 @section('content')
-    @include('layouts.inc.frontend.header')
     <div class="container my-3 mb-5">
-        <div class="row">
-            @if (session('status'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('status') }}
-                </div>
-            @endif
-            @if (session('activated'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('activated') }}
-                </div>
-            @endif
-            <!-- /User Card -->
-            <div class="col-md-8 mx-auto">
-                @if ($errors->any())
-                    <div class="alert alert-warning">
-                        @foreach ($errors->all() as $error)
-                            <div>{{ $error }}</div>
-                        @endforeach
+
+        <div class="col-md-10 mx-auto">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url('home') }}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Create</li>
+                </ol>
+            </nav>
+            <div class="row">
+                @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
                     </div>
                 @endif
-                <div class="card shadow-sm">
-                    <div class="card-header">
-                        Buat Iklan Baru
+                @if (session('activated'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('activated') }}
                     </div>
-                    <div class="card-body">
-                        <form action="{{ url('member-store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
+                @endif
+                <!-- /User Card -->
+                <div class="col-md-8 mx-auto">
+                    @if ($errors->any())
+                        <div class="alert alert-warning">
+                            @foreach ($errors->all() as $error)
+                                <div>{{ $error }}</div>
+                            @endforeach
+                        </div>
+                    @endif
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            Buat Iklan Baru
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ url('member-store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
 
-                            <div class="row">
+                                <div class="row">
 
-                                <div class="col-md-6 ">
+                                    <div class="col-md-6 ">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label">Kategori Iklan</label>
+                                            <select
+                                                class="form-select single-select-field @error('category_id') is-invalid @enderror"
+                                                id="category-dropdown" name="category_id">
+                                                <option value="">--Pilih Kategori--</option>
+                                                @foreach ($categories as $key => $category)
+                                                    <option value="{{ $category->id }}">
+                                                        {{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('category_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label">Subcategory</label>
+                                            <select id="subcategory-dropdown"
+                                                class="form-select single-select-field @error('subcategory_id') is-invalid @enderror"
+                                                name="subcategory_id">
+                                            </select>
+                                            @error('subcategory_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label">Judul Iklan</label>
+                                            <input type="text" class="form-control @error('title') is-invalid @enderror"
+                                                name="title" value="{{ old('title') }}">
+                                            @error('title')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12 my-5">
+
+                                        <div class="row">
+
+
+
+                                            <div class="col-md-3 col-6 mb-3">
+
+                                                <div id="imagePreview2"
+                                                    class="d-flex flex-column min-vh-60 justify-content-center align-items-center p-5">
+                                                    <p class="text-muted">PHOTO </p>
+                                                    <i class="ti ti-photo-plus fs-1 mx-auto"></i>
+                                                </div>
+                                                <input id="uploadFile2" type="file" name="image[]" class="img">
+
+                                            </div>
+
+
+
+
+                                        </div>
+
+                                        <div class="col-md-3 col-6 mb-3">
+
+                                            <div id="imagePreview3"
+                                                class="d-flex flex-column min-vh-50 justify-content-center align-items-center">
+                                                <p class="text-muted">PHOTO 3</p>
+                                                <i class="ti ti-photo-plus fs-1 mx-auto"></i>
+                                            </div>
+                                            <input id="uploadFile3" type="file" name="image[]" class="img">
+
+                                        </div>
+
+                                    </div>
+
+
+                                    {{-- <div class="post-image post-image-placeholder mrm mts empty">
+                                        <div class="upload-section">
+                                            <input type="file" id="Photofile1" class="upload-img" name="image_cover"
+                                                required>
+                                            <label class="icon-camera" for="Photofile1">
+                                                <i class="ti ti-camera"></i>
+                                            </label>
+                                            <p class="uppercase">Thumbnail</p>
+                                        </div>
+                                        <div class="preview-section"></div>
+                                    </div> --}}
+                                </div>
+
+                                <div class="col-md-12">
                                     <div class="form-group mb-3">
-                                        <label class="form-label">Kategori Iklan</label>
-                                        <select
-                                            class="form-select single-select-field @error('category_id') is-invalid @enderror"
-                                            id="category-dropdown" name="category_id">
-                                            <option value="">--Pilih Kategori--</option>
-                                            @foreach ($categories as $key => $category)
-                                                <option value="{{ $category->id }}">
-                                                    {{ $category->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('category_id')
+                                        <label class="form-label">Deskripsi Iklan</label>
+                                        <textarea id="summernote" class="form-control @error('description') is-invalid @enderror" name="description"
+                                            value="{{ old('description') }}" style="white-space: pre-wrap">{{ old('description') }}</textarea>
+                                        @error('description')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Sub Judul</label>
+                                        <input type="text" class="form-control @error('meta_title') is-invalid @enderror"
+                                            name="meta_title" value="{{ old('meta_title') }}">
+                                        @error('meta_title')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -53,17 +163,86 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label class="form-label">Subcategory</label>
-                                        <select id="subcategory-dropdown"
-                                            class="form-select single-select-field @error('subcategory_id') is-invalid @enderror"
-                                            name="subcategory_id">
-                                        </select>
-                                        @error('subcategory_id')
+                                        <label class="form-label">Sub Deskripsi</label>
+                                        <input type="text"
+                                            class="form-control @error('meta_description') is-invalid @enderror"
+                                            name="meta_description" value="{{ old('meta_description') }}">
+                                        @error('meta_description')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
+                                </div>
+
+
+                                <hr>
+
+                                <div class="col-md-6">
+
+                                    <input type="hidden" class="form-control @error('name') is-invalid @enderror"
+                                        name="name" value="{{ $user->name }}">
+                                    @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+
+                                </div>
+                                <div class="col-md-6">
+
+                                    <input type="hidden" class="form-control @error('email') is-invalid @enderror"
+                                        name="email" value="{{ $user->email }}">
+                                    @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+
+                                </div>
+                                <div class="col-md-12">
+
+                                    <input type="hidden" class="form-control @error('phone') is-invalid @enderror"
+                                        name="phone" value="{{ $user->phone }}">
+                                    @error('phone')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+
+                                        <label class="form-label">Website Text <span class="text-success"> * Optional
+                                            </span></label>
+
+                                        <input type="text" class="form-control @error('website') is-invalid @enderror"
+                                            name="website" value="{{ old('website') }}">
+                                        @error('website')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Target url <span class="text-success"> * Optional
+                                        </span></label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1"><i
+                                                class="ti ti-link"></i></span>
+                                        <input type="text" name="url"
+                                            class="form-control @error('url') is-invalid @enderror"
+                                            placeholder="https://.." aria-label="Username"
+                                            aria-describedby="basic-addon1">
+                                        @error('url')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
                                 </div>
 
                                 <div class="col-md-6 ">
@@ -101,150 +280,9 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-7">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Judul Iklan</label>
-                                        <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                            name="title" value="{{ old('title') }}">
-                                        @error('title')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Harga</label>
-                                        <input type="text" class="form-control @error('price') is-invalid @enderror"
-                                            name="price" value="{{ old('title') }}">
-                                        @error('price')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
 
 
-                                <div class="col-md-12 my-5">
-
-                                    <div class="row">
-
-
-
-                                        <div class="col-md-3 col-6 mb-3">
-
-                                            <div id="imagePreview2"
-                                                class="d-flex flex-column min-vh-50 justify-content-center align-items-center">
-                                                <p class="text-muted">PHOTO 1</p>
-                                                <i class="ti ti-photo-plus fs-1 mx-auto"></i>
-                                            </div>
-                                            <input id="uploadFile2" type="file" name="image[]" class="img">
-
-                                        </div>
-
-                                        <div class="col-md-3 col-6 mb-3">
-
-                                            <div id="imagePreview3"
-                                                class="d-flex flex-column min-vh-50 justify-content-center align-items-center">
-                                                <p class="text-muted">PHOTO 2</p>
-                                                <i class="ti ti-photo-plus fs-1 mx-auto"></i>
-                                            </div>
-                                            <input id="uploadFile3" type="file" name="image[]" class="img">
-
-                                        </div>
-
-                                        <div class="col-md-3 col-6 mb-3">
-
-                                            <div id="imagePreview3"
-                                                class="d-flex flex-column min-vh-50 justify-content-center align-items-center">
-                                                <p class="text-muted">PHOTO 3</p>
-                                                <i class="ti ti-photo-plus fs-1 mx-auto"></i>
-                                            </div>
-                                            <input id="uploadFile3" type="file" name="image[]" class="img">
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Deskripsi Iklan</label>
-                                        <textarea id="summernote" class="form-control @error('description') is-invalid @enderror" name="description"
-                                            value="{{ old('description') }}" style="white-space: pre-wrap">{{ old('description') }}</textarea>
-                                        @error('description')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Sub Judul</label>
-                                        <input type="text"
-                                            class="form-control @error('meta_title') is-invalid @enderror"
-                                            name="meta_title" value="{{ old('meta_title') }}">
-                                        @error('meta_title')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Sub Deskripsi</label>
-                                        <input type="text"
-                                            class="form-control @error('meta_description') is-invalid @enderror"
-                                            name="meta_description" value="{{ old('meta_description') }}">
-                                        @error('meta_description')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-6">
-
-                                    <input type="hidden" class="form-control @error('name') is-invalid @enderror"
-                                        name="name" value="{{ $user->name }}">
-                                    @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-
-                                </div>
-                                <div class="col-md-6">
-
-                                    <input type="hidden" class="form-control @error('email') is-invalid @enderror"
-                                        name="email" value="{{ $user->email }}">
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-
-                                </div>
-                                <div class="col-md-12">
-
-                                    <input type="hidden" class="form-control @error('phone') is-invalid @enderror"
-                                        name="phone" value="{{ $user->phone }}">
-                                    @error('phone')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-
-                                </div>
-
+                                <hr>
 
                                 <div class="col-md-12">
                                     <div class="form-group mb-3">
@@ -270,7 +308,7 @@
                                 <div class="col-md-12">
                                     <button type="submit" class="btn btn-primary">Posting Iklan</button>
                                 </div>
-                            </div>
+                        </div>
 
                         </form>
 
@@ -281,19 +319,22 @@
             <div class="col-md-4">
                 <div class="card shadow-sm">
                     <div class="card-header">
-                        Tips
+                        <i class="ti ti-bulb fs-4 text-warning"></i> Tips
                     </div>
                     <div class="card-body">
                         <ul>
-                            <li>Nomor Handphone hanya di gunakan untuk 1 kali pemasangan Iklan</li>
-                            <li>Daftar jadi member untuk memasang lebih banyak iklan</li>
-                            <li>Dapatkan Badge Verified dengan membeli Iklan Premium dan Iklan akan tayang paling atas</li>
+                            <li>Jika Akun Anda adalah Free Anda hanya bisa memasang iklan maksimal 3 iklan dalam sehari,
+                                dan
+                                bisa memasang iklan di hari berikutnya.</li>
+                            <li>Anda Bisa membeli paket Limit Iklan, Jika anda ingin memasang lebih banyak Iklan dalam
+                                Sehari</li>
+                            <li>Coba Gunakan Fitur Iklan Premium untuk fitur yang lebih banyak</li>
                         </ul>
                     </div>
                 </div>
             </div>
-
         </div>
+    </div>
     </div>
 @endsection
 
@@ -366,11 +407,9 @@
             tooltip: false,
             toolbar: [
                 ['style', ['style']],
-                ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
+                ['font', ['bold', 'italic', 'underline']],
                 ['para', ['ol', 'ul', 'paragraph']],
-                ['table', ['table']],
+
 
 
             ]
@@ -501,5 +540,27 @@
         $('#imagePreview4').click(function() {
             $('#uploadFile4').click();
         });
+
+        // Format Number
+        var harga = document.getElementById('harga');
+        harga.addEventListener('keyup', function(e) {
+            harga.value = formatRupiah(this.value, 'Rp. ');
+        });
+
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
     </script>
 @endsection

@@ -68,6 +68,7 @@ class RegisterController extends Controller
                 // ->numbers()
                 // ->symbols()
             ],
+            'g-recaptcha-response' => 'required|recaptcha',
         ]);
     }
 
@@ -104,7 +105,7 @@ class RegisterController extends Controller
         $get_user_email = $data['email'];
         $get_user_name = $data['name'];
         $get_user_phone = $data['phone'];
-        Mail::to($data['email'])->send(new WelcomeMail($get_user_email, $validOtp, $get_user_name, $get_user_phone));
+        // Mail::to($data['email'])->send(new WelcomeMail($get_user_email, $validOtp, $get_user_name, $get_user_phone));
 
         $this->send_whatsapp($validOtp, $get_user_phone);
 
@@ -134,7 +135,7 @@ class RegisterController extends Controller
                 'message' => "Ini adalah Kode OTP Pendaftaran Anda *$validOtp* Pesan ini dikirim dari atransauto.com jangan bagikan kode otp ini kepada siapapun",
             ),
             CURLOPT_HTTPHEADER => array(
-                'Authorization: KyJbdr0LxUSM#WXgzszp' //change TOKEN to your actual token
+                'Authorization: YkmTfmVXfmUDUF_o@RnT' //change TOKEN to your actual token
             ),
         ));
 

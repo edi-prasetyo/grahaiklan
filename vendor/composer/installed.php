@@ -10,6 +10,15 @@
         'dev' => true,
     ),
     'versions' => array(
+        'biscolab/laravel-recaptcha' => array(
+            'pretty_version' => 'v6.1.0',
+            'version' => '6.1.0.0',
+            'reference' => '440fc617cba9f39aab7fda5d7697b76a55286e31',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../biscolab/laravel-recaptcha',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'brick/math' => array(
             'pretty_version' => '0.11.0',
             'version' => '0.11.0.0',

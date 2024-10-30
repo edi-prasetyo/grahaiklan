@@ -10,6 +10,13 @@
                             {{ __('Login') }}
                         </h4>
                         <p class="mb-4">Silahkan Login untuk masuk ke member</p>
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                @foreach ($errors->all() as $error)
+                                    <div>{{ $error }}</div>
+                                @endforeach
+                            </div>
+                        @endif
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
 
@@ -29,7 +36,7 @@
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1"><i class="ti ti-mail"></i></span>
                                     <input id="email" type="email"
-                                        class="form-control @error('email') is-invalid @enderror" name="email" required
+                                        class="form-control @error('email') is-invalid @enderror" name="email" 
                                         autocomplete="email" placeholder="Email" aria-label="Email"
                                         value="{{ old('email') }}" aria-describedby="basic-addon1" autofocus>
                                     @error('email')
@@ -56,7 +63,7 @@
 
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon1"><i class="ti ti-lock"></i></span>
-                                <input type="password" name="password" required
+                                <input type="password" name="password"
                                     class="form-control @error('password') is-invalid @enderror"
                                     autocomplete="current-password" placeholder="Password" aria-label="Password"
                                     aria-describedby="basic-addon1">
@@ -80,6 +87,12 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="form-group my-2">
+                                        <strong> </strong>
+                                        {!! htmlFormSnippet() !!}
+                                    
+                                    </div> 
 
                             <div class="row mb-0">
                                 <div class="d-grid gap-2">

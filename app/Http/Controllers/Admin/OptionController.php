@@ -39,6 +39,7 @@ class OptionController extends Controller
         $option->twitter = $request['twitter'];
         $option->maps = $request['maps'];
         $option->whatsapp_api = $request['whatsapp_api'];
+        $option->ads_status = $request->ads_status == true ? '1' : '0';
 
 
 

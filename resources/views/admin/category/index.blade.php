@@ -33,7 +33,7 @@
                                 <td>
                                     @if ($category->image == null)
                                     @else
-                                        <img class="img-fluid" src="{{ asset($category->image) }}">
+                                        <img class="img-fluid" src="{{ asset($category->image_url) }}">
                                     @endif
 
                                     {!! $category->icon !!}
@@ -63,9 +63,8 @@
                 </table>
 
             </div>
+
         </div>
-        <div class="col-md-12 mt-5">
-            {{ $categories->links() }}
-        </div>
+
     </div>
 @endsection

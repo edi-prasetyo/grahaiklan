@@ -12,12 +12,27 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::with('subcategory')->get();
 
         if ($categories) {
             return response()->json([
                 'success' => true,
                 'data' => $categories
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ]);
+        }
+    }
+    public function popular_category()
+    {
+        $pop_cats = Category::withCount('pop_ads')->orderBy('pop_ads_count', 'desc')->take(8)->get();
+        if ($pop_cats) {
+            return response()->json([
+                'success' => true,
+                'data' => $pop_cats
             ]);
         } else {
             return response()->json([

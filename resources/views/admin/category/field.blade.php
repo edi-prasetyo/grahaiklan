@@ -44,7 +44,7 @@
                                 </span>
                             @enderror
                         </div>
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
 
                             <input type="text" name="field_icon" placeholder="Icon"
                                 class="form-control @error('icon') is-invalid @enderror">
@@ -53,9 +53,18 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                        </div>
+                        </div> --}}
 
-                        <button type="submit" class="btn btn-primary">Save</button>
+
+                        <select id="selIcon" name="field_icon" class="form-select mb-3">
+                            @foreach ($icons as $key => $value)
+                                <option value="{{ $value->icon_url }}" data-iconurl="{{ $value->icon_url }}">
+                                    {{ $value->name }}</option>
+                            @endforeach
+
+                        </select>
+
+                        <button type="submit" class="btn btn-primary mt-3">Save</button>
 
                     </form>
                 </div>
@@ -72,6 +81,7 @@
 
                             <th scope="col">name</th>
                             <th scope="col">value</th>
+                            <th scope="col">icon</th>
                             <th scope="col">action</th>
                         </tr>
                     </thead>
@@ -80,7 +90,7 @@
                             <tr>
                                 <td>{{ $data->field_name }}</td>
                                 <td>{{ $data->field_value }}</td>
-                                <td>{{ $data->field_icon }}</td>
+                                <td><img src="{{ $data->field_icon }}"> </td>
                                 <td>
                                     <a href="{{ url('admin/category/edit-subcategory/' . $data->id) }}"
                                         class="btn btn-primary btn-sm text-white"><i class="fa fa-edit"></i> </a>
@@ -96,4 +106,38 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        // use template result=> for having a flag in dropdown 
+        // and use selection for getting it selected flag icon with dropdown selected 
+        $("#selIcon").select2({
+            theme: "bootstrap-5",
+            templateResult: function(state) {
+                var iconUrl = $(state.element).attr('data-iconurl');
+                if (!state.id) {
+                    return state.text;
+                }
+                var baseUrl = iconUrl;
+                var $state = $(
+                    '<span><img src="' + baseUrl + '" class="img-flag" width="30px"/> ' + state.text +
+                    '</span>'
+                );
+                return $state;
+            },
+            templateSelection: function(state) {
+                var iconUrl = $(state.element).attr('data-iconurl');
+                if (!state.id) {
+                    return state.text;
+                }
+                var baseUrl = iconUrl;
+                var $state = $(
+                    '<span><img src="' + baseUrl + '" class="img-flag" height="17px"/> ' + state.text +
+                    '</span>'
+                );
+                return $state;
+            }
+        });
+    </script>
 @endsection

@@ -11,8 +11,8 @@ use App\Http\Requests\CategoryFormRequest;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Field;
+use App\Models\Icon;
 use App\Models\Subcategory;
-use App\Models\Type;
 use Illuminate\Support\Facades\URL;
 
 use Intervention\Image\ImageManager;
@@ -23,25 +23,21 @@ use Intervention\Image\Drivers\Gd\Driver;
 
 class CategoryController extends Controller
 {
-    public $category_id;
+
     public function index()
     {
-        $categories =  Category::orderBy('id', 'DESC')->paginate(3);
+        $categories =  Category::all();
+        // return $categories;
         return view('admin.category.index', compact('categories'));
     }
 
-    /**
-     * Write code on Method
-     *
-     * @return response()
-     */
-    public function fetchBrand(Request $request)
-    {
-        $data['brands'] = Brand::where("category_id", $request->category_id)
-            ->get(["name", "id"]);
+    // public function fetchBrand(Request $request)
+    // {
+    //     $data['brands'] = Brand::where("category_id", $request->category_id)
+    //         ->get(["name", "id"]);
 
-        return response()->json($data);
-    }
+    //     return response()->json($data);
+    // }
 
     public function create()
     {
@@ -68,36 +64,28 @@ class CategoryController extends Controller
         }
         $category->description = $validatedData['description'];
 
+
+
         // if ($request->hasFile('image')) {
-        //     $file = $request->file('image');
-        //     $ext = $file->getClientOriginalExtension();
-        //     $filename = time() . '.' . $ext;
-        //     $file->move('uploads/category/', $filename);
+        //     $manager = new ImageManager(new Driver());
+        //     $name_gen = hexdec(uniqid()) . '.' . $request->file('image')->getClientOriginalExtension();
+        //     $img = $manager->read($request->file('image'));
 
-        //     $img = ImageResize::make($file);
-        //     if (ImageResize::make($file)->width() > 720) {
-        //         $img->resize(720, null, function ($constraint) {
-        //             $constraint->aspectRatio();
-        //         });
-        //     }
-        //     $img->save(public_path('uploads/category/thumbs/') . $filename);
+        //     $img = $img->scale(50);
+        //     $img->toPng()->save(base_path('public/uploads/category/' . $name_gen));
+        //     $save_url = $name_gen;
 
-
-        //     $category->image = $filename;
-        //     $category->image_url = URL::to('/uploads/category/' . $filename);
+        //     $category->image = $save_url;
+        //     $category->image_url = URL::to('/uploads/category/' . $name_gen);
         // }
 
         if ($request->hasFile('image')) {
-            $manager = new ImageManager(new Driver());
-            $name_gen = hexdec(uniqid()) . '.' . $request->file('image')->getClientOriginalExtension();
-            $img = $manager->read($request->file('image'));
-
-            $img = $img->scale(50);
-            $img->toPng()->save(base_path('public/uploads/category/' . $name_gen));
-            $save_url = $name_gen;
-
-            $category->image = $save_url;
-            $category->image_url = URL::to('/uploads/category/' . $name_gen);
+            $file = $request->file('image');
+            $ext = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $ext;
+            $file->move('uploads/category/', $filename);
+            $category->image = $filename;
+            $category->image_url = URL::to('/uploads/category/' . $filename);
         }
 
         $category->meta_title = $validatedData['meta_title'];
@@ -122,20 +110,7 @@ class CategoryController extends Controller
         $category->icon = $validatedData['icon'];
         $category->description = $validatedData['description'];
 
-        // $uploadPath = 'uploads/category/';
-        // if ($request->hasFile('image')) {
 
-        //     $path = 'uploads/category/' . $category->image;
-        //     if (File::exists($path)) {
-        //         File::delete($path);
-        //     }
-
-        //     $file = $request->file('image');
-        //     $ext = $file->getClientOriginalExtension();
-        //     $filename = time() . '.' . $ext;
-        //     $file->move('uploads/category/', $filename);
-        //     $category->image = $uploadPath . $filename;
-        // }
 
         if ($request->hasFile('image')) {
 
@@ -144,21 +119,18 @@ class CategoryController extends Controller
                 File::delete($path);
             }
 
-            $manager = new ImageManager(new Driver());
-            $name_gen = hexdec(uniqid()) . '.' . $request->file('image')->getClientOriginalExtension();
-            $img = $manager->read($request->file('image'));
-
-            $img = $img->scale(50);
-            $img->toPng()->save(base_path('public/uploads/category/' . $name_gen));
-            $save_url = $name_gen;
-
-            $category->image = $save_url;
-            $category->image_url = URL::to('/uploads/category/' . $name_gen);
+            $file = $request->file('image');
+            $ext = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $ext;
+            $file->move('uploads/category/', $filename);
+            $category->image = $filename;
+            $category->image_url = URL::to('/uploads/category/' . $filename);
         }
 
         $category->meta_title = $validatedData['meta_title'];
         $category->meta_description = $validatedData['meta_description'];
         $category->meta_keyword = $validatedData['meta_keyword'];
+        $category->premium = $request->premium == true ? '1' : '0';
         $category->status = $request->status == true ? '1' : '0';
         $category->premium = $request->premium == true ? '1' : '0';
 
@@ -194,18 +166,18 @@ class CategoryController extends Controller
         $code = random_int(00, 99);
         $slug = $slugRequest . '-' . $code;
 
-        $subctegory = new Subcategory();
-        $subctegory->uuid = $uuid;
-        $subctegory->category_id = $request['category_id'];
-        $subctegory->name = $request['name'];
+        $subcategory = new Subcategory();
+        $subcategory->uuid = $uuid;
+        $subcategory->category_id = $request['category_id'];
+        $subcategory->name = $request['name'];
         if (Subcategory::where('slug', $slugRequest)->exists()) {
-            $subctegory->slug = $slug;
+            $subcategory->slug = $slug;
         } else {
-            $subctegory->slug = $slugRequest;
+            $subcategory->slug = $slugRequest;
         }
-        $subctegory->status = $request->status == true ? '1' : '0';
-        $subctegory->premium = $request->premium == true ? '1' : '0';
-        $subctegory->save();
+        $subcategory->status = $request->status == true ? '1' : '0';
+        $subcategory->premium = $request->status == true ? '1' : '0';
+        $subcategory->save();
 
         return redirect()->back()->with('message', 'Subcategory has ben Added');
     }
@@ -219,6 +191,7 @@ class CategoryController extends Controller
         $category = Category::where('id', $subcategory->category_id)->first();
 
         $subcategory->name = $request['name'];
+        $subcategory->premium = $request->premium == true ? '1' : '0';
         $subcategory->status = $request->status == true ? '1' : '0';
         $subcategory->premium = $request->premium == true ? '1' : '0';
         $subcategory->update();
@@ -234,13 +207,14 @@ class CategoryController extends Controller
     // Field funnction
     public function field(Subcategory $subcategory)
     {
-
+        $icons = Icon::all();
         $fields = Field::where('subcategory_id', $subcategory->id)->get();
         // return $subcategory;
-        return view('admin.category.field', compact('fields', 'subcategory'));
+        return view('admin.category.field', compact('fields', 'subcategory', 'icons'));
     }
     public function store_field(Request $request)
     {
+
         $uuid = Str::uuid()->toString();
         $field = new Field();
         $field->uuid = $uuid;

@@ -1,7 +1,6 @@
 @extends('layouts.app')
-@include('layouts.inc.frontend.header')
 @section('content')
-    <div class="container mb-5">
+    <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-md-5">
                 <div class="card shadow-sm">
@@ -9,7 +8,7 @@
 
                     <div class="card-body px-5">
                         @if ($errors->any())
-                            <div class="alert alert-warning">
+                            <div class="alert alert-danger">
                                 @foreach ($errors->all() as $error)
                                     <div>{{ $error }}</div>
                                 @endforeach
@@ -88,7 +87,13 @@
                                     name="password_confirmation" required autocomplete="new-password">
                             </div>
 
-                            <div class="row mb-0">
+<div class="form-group">
+                                        <strong>Validasi </strong>
+                                        {!! htmlFormSnippet() !!}
+                                    
+                                    </div>  
+
+                            <div class="row mb-0 mt-3">
                                 <div class="d-grid gap-2">
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Register') }}

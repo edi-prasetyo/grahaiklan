@@ -41,7 +41,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ url('admin/products/show/' . $ads->id) }}"
+                                    <a href="{{ url('admin/advertisements/show/' . $ads->id) }}"
                                         class="btn btn-sm btn-success text-white">lihat</a>
 
                                 </td>

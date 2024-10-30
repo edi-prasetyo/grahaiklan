@@ -10,6 +10,7 @@ use App\Mail\WelcomeMail;
 use App\Models\Advertisement;
 use App\Models\City;
 use App\Models\Image;
+use App\Models\Page;
 use App\Models\Province;
 use App\Models\Subcategory;
 use App\Models\VerifyOtp;
@@ -30,13 +31,21 @@ class FrontendController extends Controller
             ->leftJoin('cities', 'cities.id', '=', 'advertisements.city_id')
             ->where('advertisements.status', 1)
             ->with('images')
+            ->orderBy('id', 'desc')->take(4)->get();
+
+        $popular_ads = Advertisement::select('advertisements.id',  'advertisements.title', 'advertisements.price', 'advertisements.slug', 'advertisements.name', 'advertisements.views', 'advertisements.phone', 'advertisements.description', 'advertisements.status', 'advertisements.updated_at', 'categories.name as category_name', 'categories.slug as category_slug', 'provinces.name as province_name', 'cities.name as city_name')
+            ->leftJoin('categories', 'categories.id', '=', 'advertisements.category_id')
+            ->leftJoin('provinces', 'provinces.id', '=', 'advertisements.province_id')
+            ->leftJoin('cities', 'cities.id', '=', 'advertisements.city_id')
+            ->where('advertisements.status', 1)
+            ->with('images')
             ->orderBy('views', 'desc')->take(4)->get();
 
         // $images = $ads->adsImages;
 
 
 
-        return view('frontend.index', compact('sliders', 'categories', 'provinces', 'ads'));
+        return view('frontend.index', compact('sliders', 'categories', 'provinces', 'ads', 'popular_ads'));
     }
     public function categories()
     {
@@ -55,15 +64,13 @@ class FrontendController extends Controller
 
         if ($get_otp) {
 
-            // $get_otp->status == 1;
-            // $get_otp->save();
 
             $user = User::where('email', $get_otp->email)->first();
             $user->status = 1;
             $user->save();
 
             VerifyOtp::where('email', $get_otp->email)->delete();
-            // $getting_otp->delete();
+
 
             return redirect('home')->with('activated', 'Akun anda sudah di aktivasi');
         } else {
@@ -136,7 +143,7 @@ class FrontendController extends Controller
                 'message' => "Ini adalah Kode OTP Pendaftaran Anda *$validOtp* Pesan ini dikirim dari atransauto.com jangan bagikan kode otp ini kepada siapapun",
             ),
             CURLOPT_HTTPHEADER => array(
-                'Authorization: KyJbdr0LxUSM#WXgzszp' //change TOKEN to your actual token
+                'Authorization: YkmTfmVXfmUDUF_o@RnT' //change TOKEN to your actual token
             ),
         ));
 
@@ -159,5 +166,11 @@ class FrontendController extends Controller
             ->get(["name", "id"]);
 
         return response()->json($data);
+    }
+
+    public function page($slug)
+    {
+        $page = Page::where('slug', $slug)->first();
+        return view('frontend.pages.detail', compact('page'));
     }
 }

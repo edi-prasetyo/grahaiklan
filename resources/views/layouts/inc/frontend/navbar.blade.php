@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-lg border-bottom" aria-label="Offcanvas navbar">
+<nav class="navbar navbar-expand-lg bg-body border-bottom" aria-label="Offcanvas navbar">
     <div class="container">
-        <a class="navbar-brand" href="#"><img style="width:200px;"
-                src="{{ asset('uploads/logo/' . $option_nav->logo) }}"></a>
+        <a class="navbar-brand" href="{{ url('/') }}"><img style="width:200px;"
+                src="{{ asset('uploads/logo/' . $global_option->logo) }}"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2"
             aria-controls="offcanvasNavbar2">
             <span class="navbar-toggler-icon"></span>
@@ -10,13 +10,77 @@
             aria-labelledby="offcanvasNavbar2Label">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasNavbar2Label"><img style="width:200px;"
-                        src="{{ asset('uploads/logo/' . $option_nav->logo) }}"></h5>
+                        src="{{ asset('uploads/logo/' . $global_option->logo) }}"></h5>
                 <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="offcanvas"
                     aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-start flex-grow-1 pe-3 fs-6">
-                    <li class="nav-item active">
+                <ul class="navbar-nav justify-content-start flex-grow-1 fs-6">
+
+
+                    <form class="w-100">
+                        {{-- <div class="input-group input-group-search mx-auto">
+                            <div class="input-group-prepend">
+                                <button id="search-btn" class="btn btn-outline-light text-success dropdown-toggle"
+                                    type="button" value="ALL" data-bs-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">ALL</button>
+                                <div id="search-dropdown" class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">BLOG</a>
+                                    <a class="dropdown-item" href="#">DOCS</a>
+                                    <a class="dropdown-item" href="#">FORUM</a>
+                                    <div role="separator" class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">ALL</a>
+                                </div>
+                            </div>
+                            <input type="search" class="form-control" placeholder="Search..." aria-label="Search"
+                                aria-describedby="search-button-addon">
+                            <div class="input-group-append">
+                                <button class="btn btn-success" type="submit"
+                                    id="search-button-addon">&#128269;</button>
+                            </div>
+                        </div> --}}
+
+
+                        <div class="input-group">
+
+                            <button id="search-btn" value="ALL" name="category_id"
+                                class="btn btn-outline-secondary shadow-none dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">Category</button>
+                            <div class="dropdown-menu megamenu" id="search-dropdown">
+                                <div class="row g-3">
+                                    @foreach ($global_categories as $item)
+                                        <div class="col-lg-4 col-6">
+                                            <div class="col-megamenu">
+                                                <h6 class="title"> <img style="width:20px;"
+                                                        src="{{ $item->image_url }}">
+                                                    {{ $item->name }}</h6>
+                                                <ul class="list-unstyled">
+
+                                                    @foreach (App\Models\Subcategory::where('category_id', $item->id)->get() as $subcat)
+                                                        <li><a class="text-decoration-none text-body-emphasis"
+                                                                href="{{ url('category/' . $item->slug . '/' . $subcat->slug) }}">{{ $subcat->name }}</a>
+                                                        </li>
+                                                    @endforeach
+
+                                                </ul>
+                                            </div> <!-- col-megamenu.// -->
+                                        </div><!-- end col-3 -->
+                                    @endforeach
+
+
+                                </div><!-- end row -->
+                            </div>
+                            <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                            <button class="btn btn-success" type="button" id="button-addon2"><i
+                                    class="ti ti-search"></i> </button>
+                        </div>
+
+
+                    </form>
+
+
+
+                    {{-- <li class="nav-item active">
                         <a class="nav-link" aria-current="page" href="{{ url('/') }}">Home</a>
                     </li>
                     <li class="nav-item active">
@@ -30,13 +94,44 @@
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link" aria-current="page" href="{{ url('/blog') }}">Blog</a>
-                    </li>
+                    </li> --}}
 
 
 
                 </ul>
 
-                <ul class="navbar-nav justify-content-end flex-grow-1">
+                <ul class="navbar-nav justify-content-end">
+
+                    <li class="nav-item dropdown has-megamenu">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"> Category </a>
+                        <div class="container">
+                            <div class="dropdown-menu megamenu" role="menu">
+
+                                <div class="row g-3">
+                                    @foreach ($global_categories as $item)
+                                        <div class="col-lg-3 col-6">
+                                            <div class="col-megamenu">
+                                                <h6 class="title"> <img style="width:40px;"
+                                                        src="{{ $item->image_url }}">
+                                                    {{ $item->name }}</h6>
+                                                <ul class="list-unstyled">
+
+                                                    @foreach (App\Models\Subcategory::where('category_id', $item->id)->get() as $subcat)
+                                                        <li><a class="text-decoration-none text-body-emphasis"
+                                                                href="{{ url('category/' . $item->slug . '/' . $subcat->slug) }}">{{ $subcat->name }}</a>
+                                                        </li>
+                                                    @endforeach
+
+                                                </ul>
+                                            </div> <!-- col-megamenu.// -->
+                                        </div><!-- end col-3 -->
+                                    @endforeach
+
+
+                                </div><!-- end row -->
+                            </div><!-- end Container -->
+                        </div> <!-- dropdown-mega-menu.// -->
+                    </li>
 
                     <li class='nav-item dropdown text-muted'>
                         <button aria-expanded='false'
@@ -73,7 +168,7 @@
                         @if (Route::has('login'))
                             <li class="nav-item">
                                 <a class="nav-link pe-5" href="{{ route('login') }}">
-                                    <i class='ti ti-user-square-rounded fs-5'></i> {{ __('Login') }}
+                                    <i class='ti ti-logout fs-5'></i> {{ __('Login') }}
                                 </a>
                             </li>
                         @endif
@@ -119,7 +214,7 @@
                     @endguest
 
                     <li class="nav-item me-2">
-                        <a class="nav-link px-5 btn btn-success" href="{{ url('pasang-iklan') }}">
+                        <a class="nav-link px-5 btn btn-success" href="{{ url('add-iklan') }}">
                             <i class='ti ti-pencil fs-4'></i> Pasang Iklan</a>
                     </li>
 
@@ -130,3 +225,25 @@
         </div>
     </div>
 </nav>
+
+@guest
+@else
+    <div class="nav-scroller bg-body border-bottom">
+        <div class="container">
+            <div class="col-md-10 mx-auto">
+                <nav class="nav" aria-label="Secondary navigation">
+                    <a class="nav-link active text-body-emphasis" aria-current="page"
+                        href="{{ url('home') }}">Dashboard</a>
+                    <a class="nav-link text-body-emphasis" href="#">
+                        Friends
+                        <span class="badge text-bg-success rounded-pill align-text-bottom">27</span>
+                    </a>
+                    <a class="nav-link text-body-emphasis" href="{{ url('my-ads') }}">My Ads</a>
+                    <a class="nav-link text-body-emphasis" href="{{ url('packages') }}">Paket Iklan</a>
+                    <a class="nav-link text-body-emphasis" href="{{ url('profile') }}">Profile</a>
+
+                </nav>
+            </div>
+        </div>
+    </div>
+@endguest
